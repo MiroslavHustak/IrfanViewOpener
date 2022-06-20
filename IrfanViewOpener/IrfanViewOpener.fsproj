@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="MyTypes\DiscriminatedUnions.fs" />
+    <Compile Include="MyTypes\Records.fs" />
+    <Compile Include="Settings\Settings.fs" />
+    <Compile Include="Auxiliaries\MakingWondersWithAux.fs" />
+    <Compile Include="Auxiliaries\Errors.fs" />
+    <Compile Include="Auxiliaries\ROP_Functions.fs" />
+    <Compile Include="Auxiliaries\Helpers.fs" />
+    <Compile Include="Auxiliaries\ClosingFunctions.fs" />
+    <Compile Include="Auxiliaries\Json.fs" />
+    <Compile Include="MainFunctions\ReadingDataFromExcel.fs" />
+    <Compile Include="MainFunctions\GettingInputValues.fs" />
+    <Compile Include="MainFunctions\OpeningIrfanView.fs" />
+    <Compile Include="Start\Start.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
+    <PackageReference Include="FSharp.Quotations.Evaluator" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0-preview.4.22229.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelKillerDll\ExcelKillerDll.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\ExcelKiller\ExcelKiller\bin\Release\FSharp.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.4" />
+  </ItemGroup>
+
+</Project>
