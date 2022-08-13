@@ -44,15 +44,15 @@ let getInputValues readFromExcel =
             let myMap: Map<string, int> = //neco na zpusob Dictionary<key, value>, key stejne jako v C# nemusi byt int
                 let dtXlsxRowsCount = dtXlsxRows.Count                       
                 let listRange = [ 0 .. dtXlsxRowsCount - 1 ]
-                let rec loop list currentMap i =   //viz podrobna verze IrfanViewOpener - pro porovnani je tam tvorba Map pomoci seq nebo array nebo list
+                let rec loop list acc i =   //viz podrobna verze IrfanViewOpener - pro porovnani je tam tvorba Map pomoci seq nebo array nebo list
                     match list with 
-                    | []        -> currentMap
+                    | []        -> acc
                     | _ :: tail -> let checkRows = 
                                        let cond = not ((myStringOP i).Contains(rcO.prefix)) 
                                        match cond with
-                                       | false -> let finalMap = Map.add (myStringOP i) (myIntNumber i) currentMap
+                                       | false -> let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
                                                   loop <| tail <| finalMap <| i + 1
-                                       | true  -> loop <| tail <| currentMap <| i + 1                                              
+                                       | true  -> loop <| tail <| acc <| i + 1                                              
                                    checkRows   
                 loop listRange Map.empty 0
             myMap 

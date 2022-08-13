@@ -16,10 +16,10 @@ open Errors
         let GetString (numberOfStrings: int, stringToAdd: string): string =   
             let initialString = String.Empty                //initial value of the string
             let listRange = [ 1 .. numberOfStrings ]
-            let rec loop list auxString auxStringToAdd =
+            let rec loop list acc auxStringToAdd =
                 match list with 
-                | []        -> auxString
-                | _ :: tail -> let finalString = (+) auxString auxStringToAdd
+                | []        -> acc
+                | _ :: tail -> let finalString = (+) acc auxStringToAdd
                                loop <| tail <| finalString <| auxStringToAdd
             loop <| listRange <| initialString <| stringToAdd
      
