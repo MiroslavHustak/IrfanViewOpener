@@ -34,10 +34,12 @@ module Start =
             ropResults |> deconstructor1 error12  
         result
 
-        //******* 3) PIPING INPUT VALUES FROM EXCEL INTO COMPOSED FUNCTION (UI INPUTS + IRFANVIEW OPENING)      
-        let howMyProgramRuns() = readDataFromExcel() |> (getInputValues >> openIrfanView)                                
-                                 //readDataFromExcel() |> getInputValues |> openIrfanView  //nebo take piping
+        //******* 3a) PIPING INPUT VALUES FROM EXCEL INTO COMPOSED FUNCTION (UI INPUTS + IRFANVIEW OPENING)      
+        //let howMyProgramRuns() = readDataFromExcel() |> getInputValues |> openIrfanView  //lze aji takto: readDataFromExcel() |> (getInputValues >> openIrfanView)  
         
+        //******* 3b) COMPOSING FUNCTIONS   
+        let howMyProgramRuns = readDataFromExcel >> getInputValues >> openIrfanView           
+                                         
         do ExcelKiller.ExcelKiller.SimulateKeyStroke('\r') //quli whileKeyIsEnter() je treba pocitacove stiskout ENTER pri spusteni programu
 
         let rec whileKeyIsEnterOrEsc() =  

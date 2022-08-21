@@ -47,24 +47,24 @@ type OpenIrfanView_Settings =
         }  
 
     module MySettings = 
-     (*
+     
      let rc = Common_Settings.Default
 
      let rcR = {
                   ReadingDataFromExcel_Settings.Default with 
-                      path1 = $@"e:\Mirek po osme hodine a o vikendech\Kontroly skenu\mustr.xlsx"  //pouze pro testovani u sebe na pocitaci                              
+                      path1 = $@"e:\E\Mirek po osme hodine a o vikendech\Kontroly skenu\mustr.xlsx"  //pouze pro testovani u sebe na pocitaci                              
                }
 
      let rcO = { 
                   OpenIrfanView_Settings.Default with 
-                      path =  $@"e:\Mirek po osme hodine a o vikendech\Kontroly skenu\rozhazovani\" //pouze pro testovani u sebe na pocitaci
-                      path2 = $@"e:\Mirek po osme hodine a o vikendech\Kontroly skenu\IrfanView\i_view32.exe" //pouze pro testovani u sebe na pocitaci
+                      path =  $@"e:\E\Mirek po osme hodine a o vikendech\Kontroly skenu\rozhazovani\" //pouze pro testovani u sebe na pocitaci
+                      path2 = $@"e:\E\Mirek po osme hodine a o vikendech\Kontroly skenu\IrfanView\i_view32.exe" //pouze pro testovani u sebe na pocitaci
                }
-     *)
+     
      //ARCHIV LITOMERICE
     
-     let rc =  Common_Settings.Default 
-     let rcR = ReadingDataFromExcel_Settings.Default
-     let rcO = OpenIrfanView_Settings.Default               
+     //let rc =  Common_Settings.Default 
+     //let rcR = ReadingDataFromExcel_Settings.Default
+     //let rcO = OpenIrfanView_Settings.Default               
      
 
