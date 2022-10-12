@@ -32,15 +32,14 @@ let private getLists low high (myMap: Map<string, int>) =
             let aux = (low, high) ||> MakingWondersWithAux.getAux 
             (<) (i + 1) aux       
         match condition1 with  
-        | true  ->                    
-                   let condition2 = myMap 
-                                    |> Map.tryFind (myKey <| low + 1 <| low + (i + 1)) //Map.tryFind je funkce
-                   match condition2 with                                                     //Vyraz musi byt zavisly na i
-                   | Some value -> Some (value, (i + 1))             //Tohle iteruje List.unfold getValue (-1)                                          
-                   | None       -> None    
+        | true  -> myMap |> Map.tryFind (myKey <| low + 1 <| low + (i + 1)) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
+                   |> function                                                     
+                      | Some value -> Some (value, (i + 1))                //Tohle iteruje List.unfold getValue (-1)                                          
+                      | None       -> None    
         | false -> None     
     
     let numberOfFilesList = List.unfold getOption (-1)               //unfold to ping from Some till bumping into None :-)
+                                                                     //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky
     
     do printfn "numberOfFilesList %A \n" <| numberOfFilesList
     

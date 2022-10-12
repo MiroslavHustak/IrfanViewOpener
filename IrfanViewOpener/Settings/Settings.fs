@@ -26,7 +26,7 @@ type ReadingDataFromExcel_Settings =
            indexOfXlsxSheet = 0<1> //Sheet v poradi 0 jako prvni, 1 = druhy, atd.
         } 
 
- [<Struct>]
+[<Struct>]
 type OpenIrfanView_Settings = 
     {        
        path: string      //viz modul DU     

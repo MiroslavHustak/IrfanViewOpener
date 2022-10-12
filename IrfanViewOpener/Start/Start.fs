@@ -12,6 +12,7 @@ open ReadingDataFromExcel
 open GettingInputValues
 open ROP_Functions.MyFunctions
 
+//C# 200, F# 800, celkem 1000 (pouze vlastni kod)
 module Start =         
 
     [<EntryPoint>]

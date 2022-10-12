@@ -55,7 +55,7 @@ let getInputValues readFromExcel =
                                        | true  -> loop <| tail <| acc <| i + 1                                              
                                    checkRows   
                 loop listRange Map.empty 0
-            myMap 
+            myMap    
          
         let getMyMap() =
             match readFromExcel with 
@@ -192,7 +192,6 @@ let getInputValues readFromExcel =
                         | true  -> List.ofSeq(mySeq)                                                 
                         | false -> dirWithIncorrNoOfFiles |> error5   
                                    List.Empty 
-
                     finally
                     () //zatim nepotrebne
                 with  

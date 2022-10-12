@@ -31,16 +31,16 @@ open DiscriminatedUnions
             | Success x  -> ()                                                                         
             | Failure ex -> ex |> error
         
-        let optionToString param =            
-            match param with 
+        let optionToString =            
+            function 
             | Some value -> match value with                             
                             | "" -> "0"
                             | _  -> value               
             | None       -> do error14()                             
                             String.Empty
         
-        let optionToString1 x = 
-            match x with 
+        let optionToString1 = 
+            function 
             | Some value -> value 
             | None       -> do error15()
                             String.Empty        
