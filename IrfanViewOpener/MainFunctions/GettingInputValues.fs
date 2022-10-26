@@ -16,7 +16,7 @@ open ROP_Functions.MyFunctions
 
 //******* DEFINITIONS OF FREQUENTLY CALLED FUNCTIONS ********************       
 //function 1
-let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits - String.length (x |> string)), rcO.stringZero)
+let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
 
 //******* MAIN FUNCTION (tady je jen jedna) ****************************
 //nested functions, vstup data typu datatable option, vystup jsou opet data, tentokrat tuple typu record * ... (partial application)

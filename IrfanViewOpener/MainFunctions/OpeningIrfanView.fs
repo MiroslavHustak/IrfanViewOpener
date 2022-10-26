@@ -12,7 +12,8 @@ open ROP_Functions.MyFunctions
 
 //******* DEFINITIONS OF FREQUENTLY CALLED FUNCTIONS       
 //function 1
-let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits - String.length (x |> string)), rcO.stringZero)
+let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
+let private stringChoicePA (x: string) = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
 
 //function 2
 let private myKey =  
@@ -20,7 +21,12 @@ let private myKey =
                   <| rcO.prefix
                   <| string x 
                   <| string y  
-    stringChoice >> key 
+    stringChoice >> key //dosazovani odleva
+
+//jen z vyukovych duvodu, tahle fce potrebuje string, myKey potrebuje int
+let private myKeyPA =  
+    let keyPA = sprintf "%s%s%s" rcO.prefix 
+    stringChoicePA >> keyPA 
 
 //******* DEFINITIONS OF TWO SUBMAIN FUNCTIONS
 //1
@@ -31,8 +37,8 @@ let private getLists low high (myMap: Map<string, int>) =
         let condition1 = 
             let aux = (low, high) ||> MakingWondersWithAux.getAux 
             (<) (i + 1) aux       
-        match condition1 with  
-        | true  -> myMap |> Map.tryFind (myKey <| low + 1 <| low + (i + 1)) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
+        match condition1 with  //myKeyPA pouzita z vyukovych duvodu
+        | true  -> myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
                    |> function                                                     
                       | Some value -> Some (value, (i + 1))                //Tohle iteruje List.unfold getValue (-1)                                          
                       | None       -> None    
@@ -123,7 +129,7 @@ let openIrfanView param =
             let myMap = myRecordParams.myMap
 
             let! _ = (<>) createdList List.Empty            
-            let! _ = String.length <| myKey low low = (+) (rcO.prefix |> String.length) rcO.numberOfScannedFileDigits                  
+            let! _ = Seq.length <| myKey low low = (+) (rcO.prefix |> Seq.length) rcO.numberOfScannedFileDigits                  
             let! _ =  myMap |> Map.containsKey (myKey low low) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
 
             let showScans = 
