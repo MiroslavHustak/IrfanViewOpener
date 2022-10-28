@@ -34,10 +34,10 @@ let private myKeyPA =
 let private getLists low high (myMap: Map<string, int>) = 
           
     let getOption i =        
-        let condition1 = 
+        let cond = 
             let aux = (low, high) ||> MakingWondersWithAux.getAux 
             (<) (i + 1) aux       
-        match condition1 with  //myKeyPA pouzita z vyukovych duvodu
+        match cond with  //myKeyPA pouzita z vyukovych duvodu
         | true  -> myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
                    |> function                                                     
                       | Some value -> Some (value, (i + 1))                //Tohle iteruje List.unfold getValue (-1)                                          
