@@ -1,4 +1,4 @@
-﻿namespace Records
+﻿module Records
 
 type InitialValuesRecord = 
     {

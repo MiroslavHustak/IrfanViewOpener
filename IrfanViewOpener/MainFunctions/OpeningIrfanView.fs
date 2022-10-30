@@ -109,11 +109,13 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
 
 //******* MAIN FUNCTION DEFINITION - OPENING IRFANVIEW WITH LAST FILES IN THEIR RESPECTIVE FOLDERS => vystupni funkce
 
-let (>>=) condition nextFunc =
+let (>>=) condition nextFunc = //symbol “»=” is the standard way of writing bind as an infix operator.
     match condition with
     | false -> rc.imageViewerProcess |> getRidOfItAll  
     | true  -> nextFunc() 
        
+//An intrinsic type extension is a type extension that extends a user-defined type.
+//"with" adds a member to MyPatternBuilder as an extension
 type MyPatternBuilder = MyPatternBuilder with            
     member _.Bind(condition, nextFunc) = (>>=) <| condition <| nextFunc 
     member _.Return x = x

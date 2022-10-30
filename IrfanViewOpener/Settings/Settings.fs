@@ -1,4 +1,4 @@
-﻿namespace Settings
+﻿module Settings
 
 open System
     
