@@ -10,6 +10,8 @@ open ROP_Functions.MyFunctions
 
 //nested functions, vystup jsou data (typu option)
 //impure z logickych duvodu
+
+//!!! nebude fungovat bez vyreseni problemu s encoding - viz soubor Start.fs
 let readDataFromExcel x =  
     
     let filepath = Path.GetFullPath(rcR.path1)   
