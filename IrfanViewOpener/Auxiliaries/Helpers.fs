@@ -4,13 +4,7 @@ open System
 open System.Diagnostics
 
 open Errors
-
-    //IntExtensions //REDUNDANT CODE (FOR LEARNING PURPOSES ONLY)
-    module IntExtensions = 
-        type System.Int32 with
-             member this.IsEven = this % 2 = 0
-             member this.IsOdd =  this % 2 <> 0
-    
+       
     module MyString = 
         //priklad pouziti: GetString(8, "0")//tuple a nazev velkym kvuli DLL pro C#
         let GetString (numberOfStrings: int, stringToAdd: string): string =   

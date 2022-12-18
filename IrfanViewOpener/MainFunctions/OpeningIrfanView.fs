@@ -7,7 +7,6 @@ open Helpers
 open Records
 open ClosingFunctions
 open Settings.MySettings
-open Helpers.IntExtensions
 open ROP_Functions.MyFunctions
 
 //******* DEFINITIONS OF FREQUENTLY CALLED FUNCTIONS       
@@ -45,17 +44,9 @@ let private getLists low high (myMap: Map<string, int>) =
         | false -> None     
     
     let numberOfFilesList = List.unfold getOption (-1)               //unfold to ping from Some till bumping into None :-)
-                                                                     //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky
-    
+                                                                     //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky    
     do printfn "numberOfFilesList %A \n" <| numberOfFilesList
-    
-    //zkouska extension, nepotrebne pro tuto app
-    let testExtension = 
-        let myTuple = (low, high) ||> MakingWondersWithAux.getAux //zamerne podruhe, aby v pripade vyhozeni nezbyl nahore unmanaged scope
-        match myTuple.IsEven = myTuple.IsOdd with
-        | true  -> do printfn "Something is wrong with my tuple ... \n"
-        | false -> do printfn "Everything is OK with my tuple ... \n" 
-                                       
+                                               
     let endFilesToOpenList = numberOfFilesList |> List.scan (+) 0 |> List.skip 1
                                                
     do printfn "endFilesToOpenList %A \n" <| endFilesToOpenList
@@ -101,7 +92,7 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
                                       <| string (numberOfFilesList.Item i) 
                                       <| "Press ENTER to continue (Esc for IrView closure)" 
                                       <| lastXyCharacters                                    
-                            do printfn "%s" <| str   
+                            do printfn "%s" str   
                         printIt()       
                         
                         do Process.browseThroughScans()

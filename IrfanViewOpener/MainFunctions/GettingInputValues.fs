@@ -85,19 +85,9 @@ let getInputValues readFromExcel =
     
         //Async for learning purposes only - async jinak vubec neni vhodny v console app, neb se prekryvaji chybova hlaseni  
         let myTaskFunctionDU x =      
-            let task3 param = 
-                async
-                    {
-                      //do! Async.Sleep 0
-                      return TupleIntInt param
-                    }        
 
-            let task4 param = 
-                async 
-                    { 
-                      //do! Async.Sleep 0
-                      return MapStringInt param 
-                    }
+            let task3 param = async { return TupleIntInt param }
+            let task4 param = async { return MapStringInt param }       
  
             let du: TaskResults[] = [|
                                       task3 (getInputValuesUI())
