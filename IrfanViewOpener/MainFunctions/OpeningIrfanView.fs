@@ -80,7 +80,7 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
                  
                         //let finalAction x = ()      
                         let result = //tohle zachyti neexistujici IrfanView, neni treba delat komplikovany pattern matching s fileInfo
-                            let ropResults = tryWith startIrfanView (fun x -> ()) (fun ex -> failwith)                                                     
+                            let ropResults = tryWith startIrfanView (fun x -> ()) (fun ex -> ())                                                     
                             ropResults |> deconstructor1 error0  
                         result
                                      

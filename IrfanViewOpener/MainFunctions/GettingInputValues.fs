@@ -127,7 +127,7 @@ let getInputValues readFromExcel =
         
         let rcInitValDu = 
             let resultDu = 
-               let ropResults() = tryWith myTaskFunctionDU (fun x -> ()) (fun ex -> failwith) 
+               let ropResults() = tryWith myTaskFunctionDU (fun x -> ()) (fun ex -> ()) 
                ropResults() |> deconstructor 
        
             {  
