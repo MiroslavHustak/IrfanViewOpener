@@ -87,38 +87,36 @@ let getInputValues readFromExcel =
         let myTaskFunctionDU x =      
 
             let task3 param = async { return TupleIntInt param }
-            let task4 param = async { return MapStringInt param }       
- 
-            let du: TaskResults[] = [|
-                                      task3 (getInputValuesUI())
-                                      task4 (getMyMap())
-                                    |] 
-                                    |> Async.Parallel 
-                                    |> Async.Catch
-                                    |> Async.RunSynchronously
-                                    |> function
-                                       | Choice1Of2 result    -> result
-                                       | Choice2Of2 (ex: exn) -> do printfn "Popis chyby async 2: %s" <| ex.Message
-                                                                 do error11()
-                                                                 Array.empty  
+            let task4 param = async { return MapStringInt param }  
+            
+            let du: TaskResults list = [
+                                        task3 (getInputValuesUI())
+                                        task4 (getMyMap())
+                                       ] 
+                                       |> Async.Parallel 
+                                       |> Async.Catch
+                                       |> Async.RunSynchronously
+                                       |> function
+                                           | Choice1Of2 result    -> result |> List.ofArray
+                                           | Choice2Of2 (ex: exn) -> do printfn "Popis chyby async 2: %s" <| ex.Message
+                                                                     do error11()
+                                                                     List.empty  
 
-            let whatIs(x: obj) =
+            let whatIs(x: obj) =  //primy dynamic cast :?> TaskResults muze vest k chybe behem runtime
                 match x with
                 | :? TaskResults as du -> du  //aby nedoslo k chybe behem runtime
                 | _                    -> do error16 "error16 - x :?> TaskResults"                                      
                                           x :?> TaskResults
         
             let inputValues = 
-                //let du = du.GetValue(0) :?> TaskResults //dynamic cast - muze vest k chybe behem runtime
-                let du = whatIs <| du.GetValue(0) 
+                let du = du |> List.item 0 |> whatIs 
                 match du with 
                 | TupleIntInt(low, high) -> (low, high)                                                    
                 | _                      -> do error16 "error16 - TupleIntInt" 
-                                            (-1, -1) 
+                                            (-1, -1) //whatever of the particular type
           
-            let myMap = 
-                //let du = du.GetValue(1) :?> TaskResults //dynamic cast - muze vest k chybe behem runtime
-                let du = whatIs <| du.GetValue(1) 
+            let myMap =                 
+                let du = du |> List.item 1 |> whatIs 
                 match du with 
                 | MapStringInt value -> value                                           
                 | _                  -> do error16 "error16 - MapStringInt" 
