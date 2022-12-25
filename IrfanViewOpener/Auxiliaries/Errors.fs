@@ -41,7 +41,7 @@ let error5 s =
 //a) variant with a "when" guard
 let error6 s =
     let strContainsOnlySpace str = 
-        str |> Seq.forall (fun item -> item = ' ')  //A string is a sequence of characters => use Seq.forall to test directly
+        str |> Seq.forall (fun item -> item = (char)32)  //A string is a sequence of characters => use Seq.forall to test directly
     let str =               
         match s with
         | "" -> let str = "EMPTY STRING"
@@ -54,7 +54,7 @@ let error6 s =
  //b) variant with match without active patterns (for learning purposes)
 let error66 s =     
     let strContainsOnlySpace s = 
-        s |> Seq.forall (fun item -> item = ' ')  //A string is a sequence of characters => use Seq.forall to test directly        
+        s |> Seq.forall (fun item -> item = (char)32)  //A string is a sequence of characters => use Seq.forall to test directly        
     let noActivePattern = 
         match strContainsOnlySpace s with
         | true  -> "SPACE"                      
@@ -68,7 +68,7 @@ let error66 s =
  //c) variant with active patterns (for learning purposes)
 let error666 s =     
     let strContainsOnlySpace s = 
-        s |> Seq.forall (fun item -> item = ' ')  //A string is a sequence of characters => use Seq.forall to test directly        
+        s |> Seq.forall (fun item -> item = (char)32)  //A string is a sequence of characters => use Seq.forall to test directly        
     let activePattern = 
         let (|Pattern1|Pattern2|) (value:string) =           
             match strContainsOnlySpace s with
