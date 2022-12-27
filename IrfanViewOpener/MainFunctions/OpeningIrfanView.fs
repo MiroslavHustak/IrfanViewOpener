@@ -43,14 +43,35 @@ let private getLists low high (myMap: Map<string, int>) =
                       | None       -> None    
         | false -> None     
     
-    let numberOfFilesList = List.unfold getOption (-1)               //unfold to ping from Some till bumping into None :-)
-                                                                     //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky    
-    do printfn "numberOfFilesList %A \n" <| numberOfFilesList
+    let numberOfFilesList1 = List.unfold getOption (-1)               //unfold to ping from Some till bumping into None :-)
+                                                                     //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky      
+                       
+    //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
+    let numberOfFilesList2 =
+        [
+            seq { -1 .. myMap.Count - 1 } 
+            |>  Seq.collect(fun i ->                                         
+                                    seq
+                                        {
+                                            let cond = 
+                                                let aux = (low, high) ||> MakingWondersWithAux.getAux 
+                                                (<) (i + 1) aux       
+                                            match cond with  
+                                            | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                                        | Some value -> yield value
+                                                        | None -> ()   
+                                            | false -> ()
+                                        }                                                  
+                            ) 
+        ] |> List.head |> List.ofSeq
+    
+    do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
+    do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
                                                
-    let endFilesToOpenList = numberOfFilesList |> List.scan (+) 0 |> List.skip 1
+    let endFilesToOpenList = numberOfFilesList1 |> List.scan (+) 0 |> List.skip 1
                                                
     do printfn "endFilesToOpenList %A \n" <| endFilesToOpenList
-    numberOfFilesList, endFilesToOpenList        
+    numberOfFilesList1, endFilesToOpenList        
 
 //2
 //impure kvuli vystupu na console a spusteni IrfanView
