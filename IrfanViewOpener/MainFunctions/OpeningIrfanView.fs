@@ -63,7 +63,7 @@ let private getLists low high (myMap: Map<string, int>) =
                                             | false -> ()
                                         }                                                  
                              ) 
-        ] |> List.head |> List.ofSeq
+        ] |> Seq.concat |> List.ofSeq
 
     //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
     let numberOfFilesList3 =
