@@ -50,7 +50,7 @@ let private getLists low high (myMap: Map<string, int>) =
     let numberOfFilesList2 =
         [
             seq { -1 .. myMap.Count - 1 } 
-            |>  Seq.collect(fun i ->                                         
+            |> Seq.collect (fun i ->                                         
                                     seq
                                         {
                                             let cond = 
@@ -62,9 +62,29 @@ let private getLists low high (myMap: Map<string, int>) =
                                                         | None -> ()   
                                             | false -> ()
                                         }                                                  
-                            ) 
+                             ) 
         ] |> List.head |> List.ofSeq
+
+    //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
+    let numberOfFilesList3 =
+        [
+            seq { -1 .. myMap.Count - 1 } 
+            |> Seq.map (fun i ->                                         
+                                seq
+                                    {
+                                        let cond = 
+                                            let aux = (low, high) ||> MakingWondersWithAux.getAux 
+                                            (<) (i + 1) aux       
+                                        match cond with  
+                                        | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                                    | Some value -> yield value
+                                                    | None -> ()   
+                                        | false -> ()
+                                    }                                               
+                        ) |> Seq.concat   
+        ] |> Seq.concat |> List.ofSeq
     
+    do printfn "numberOfFilesList3 %A \n" <| numberOfFilesList3     
     do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
     do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
                                                
