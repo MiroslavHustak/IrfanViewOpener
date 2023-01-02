@@ -31,7 +31,19 @@ let private myKeyPA =
 //1
 //impure kvuli vystupu na console
 let private getLists low high (myMap: Map<string, int>) = 
-          
+
+    let getOption i =        
+        let cond = 
+            let aux = (low, high) ||> MakingWondersWithAux.getAux 
+            (<) (i + 1) aux  
+        
+        match cond with  //myKeyPA pouzita z vyukovych duvodu
+        | true  -> myMap
+                   |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
+                   |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
+        | false -> None     
+    
+    (*
     let getOption i =        
         let cond = 
             let aux = (low, high) ||> MakingWondersWithAux.getAux 
@@ -39,10 +51,11 @@ let private getLists low high (myMap: Map<string, int>) =
         match cond with  //myKeyPA pouzita z vyukovych duvodu
         | true  -> myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
                    |> function                                                     
-                      | Some value -> Some (value, (i + 1))                //Tohle iteruje List.unfold getValue (-1)                                          
+                      | Some value -> Some (value, (i + 1))                                                        
                       | None       -> None    
         | false -> None     
-    
+    *)
+
     let numberOfFilesList1 = List.unfold getOption (-1)               //unfold to ping from Some till bumping into None :-)
                                                                      //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky      
                        
@@ -64,7 +77,7 @@ let private getLists low high (myMap: Map<string, int>) =
                                         }                                                  
                              ) 
         ] |> Seq.concat |> List.ofSeq
-
+    
     do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
     do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
                                                
