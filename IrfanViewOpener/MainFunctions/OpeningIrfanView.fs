@@ -65,30 +65,10 @@ let private getLists low high (myMap: Map<string, int>) =
                              ) 
         ] |> Seq.concat |> List.ofSeq
 
-    //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
-    let numberOfFilesList3 =
-        [
-            seq { -1 .. myMap.Count - 1 } 
-            |> Seq.map (fun i ->                                         
-                                seq
-                                    {
-                                        let cond = 
-                                            let aux = (low, high) ||> MakingWondersWithAux.getAux 
-                                            (<) (i + 1) aux       
-                                        match cond with  
-                                        | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
-                                                    | Some value -> yield value
-                                                    | None -> ()   
-                                        | false -> ()
-                                    }                                               
-                        ) |> Seq.concat   
-        ] |> Seq.concat |> List.ofSeq
-    
-    do printfn "numberOfFilesList3 %A \n" <| numberOfFilesList3     
     do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
     do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
                                                
-    let endFilesToOpenList = numberOfFilesList1 |> List.scan (+) 0 |> List.skip 1
+    let endFilesToOpenList = numberOfFilesList2 |> List.scan (+) 0 |> List.skip 1
                                                
     do printfn "endFilesToOpenList %A \n" <| endFilesToOpenList
     numberOfFilesList1, endFilesToOpenList        

@@ -90,8 +90,8 @@ let getInputValues readFromExcel =
             let task4 param = async { return MapStringInt param }  
             
             let du: TaskResults list = [
-                                        task3 (getInputValuesUI())
-                                        task4 (getMyMap())
+                                          task3 (getInputValuesUI())
+                                          task4 (getMyMap())
                                        ] 
                                        |> Async.Parallel 
                                        |> Async.Catch
