@@ -45,9 +45,7 @@ let private getLists low high (myMap: Map<string, int>) =
     
     (*
     let getOption i =        
-        let cond = 
-            let aux = (low, high) ||> MakingWondersWithAux.getAux 
-            (<) (i + 1) aux       
+        //see the code above
         match cond with  //myKeyPA pouzita z vyukovych duvodu
         | true  -> myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
                    |> function                                                     
@@ -60,24 +58,21 @@ let private getLists low high (myMap: Map<string, int>) =
                                                                      //List.unfold potrebuje option, vraci list hodnot vybranych z nejake podminky      
                        
     //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
-    let numberOfFilesList2 =
-        [
-            seq { -1 .. myMap.Count - 1 } 
-            |> Seq.collect (fun i ->                                         
-                                    seq
-                                        {
-                                            let cond = 
-                                                let aux = (low, high) ||> MakingWondersWithAux.getAux 
-                                                (<) (i + 1) aux       
-                                            match cond with  
-                                            | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
-                                                        | Some value -> yield value
-                                                        | None -> ()   
-                                            | false -> ()
-                                        }                                                  
-                             ) 
-        ] |> Seq.concat |> List.ofSeq
-    
+    let numberOfFilesList2 =       
+        [ -1 .. myMap.Count - 1 ] 
+        |> List.collect (fun i ->                                         
+                                [
+                                    let cond = 
+                                        let aux = (low, high) ||> MakingWondersWithAux.getAux 
+                                        (<) (i + 1) aux       
+                                    match cond with  
+                                    | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                               | Some value -> yield value
+                                               | None       -> ()   
+                                    | false -> ()
+                                ]                                                 
+                        ) 
+
     do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
     do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
                                                
