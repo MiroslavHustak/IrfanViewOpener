@@ -55,13 +55,20 @@ let readDataFromExcel x =
   
     let adaptDtXlsx (dtXlsxOption: DataTable option) =    
 
-        let adapt = 
-            match dtXlsxOption with 
-            | Some dtXlsx ->                                              
+        (*
+        match dtXlsxOption with 
+        | Some dtXlsx ->                                              
+                        //see below for the code
+        | None       -> None     
+        *)
+
+        dtXlsxOption           
+        |> Option.bind 
+               (fun dtXlsx -> 
                             let numberOfColumns = rc.columnIndex.Length
                             seq {0 .. numberOfColumns - 1} 
                             |> Seq.iter(fun item -> dtXlsx.Columns.[rc.columnIndex.[item]].SetOrdinal(item))//Usporadame sloupce
-                                                                                       
+                                                                               
                             let sequenceGenerator _ = dtXlsx.Columns.Count  
                             let condition = (<) numberOfColumns //partial application = numberOfColumns < sequenceGenerator, viz posledni radek Seq.initInfinite sequenceGenerator |> ....
                             let bodyOfWhileCycle _ = do dtXlsx.Columns.RemoveAt(numberOfColumns) //Vymazeme vsechny napravo, co tam nemaji co delat
@@ -71,25 +78,16 @@ let readDataFromExcel x =
                             |> Seq.iter bodyOfWhileCycle 
 
                             dtXlsx |> Option.ofObj
-            | None       -> None                                 
-        adapt 
+               )   
         
     let readFromExcel =
         try
-            try
-                (*
-                let fInfodat: FileInfo = new FileInfo(filepath)                 
-                let fInfodatOption = fInfodat 
-                                     |> Option.ofObj   
-                                     |> optionToFileInfo "FileInfo()"
-                *)   
-                //match fInfodatOption.Exists with   
-                match File.Exists(filepath) with 
-                | true  -> let readFromExcel = readData() |> adaptDtXlsx  
-                           readFromExcel                        
-                | false -> do error8()
-                           None
-                                              
+            try    
+                File.Exists(filepath)
+                |> function
+                    | true  -> readData() |> adaptDtXlsx //reading from Excel
+                    | false -> do error8()
+                               None                                              
             finally
             () //zatim nepotrebne
         with                                                                                               
@@ -106,3 +104,10 @@ let readDataFromExcel x =
      The static methods of the File class perform security checks on all methods. If you are going to reuse an object several times, consider using the corresponding 
      instance method of FileInfo instead, because the security check will not always be necessary.    
      *) 
+
+     (*
+     let fInfodat: FileInfo = new FileInfo(filepath)                 
+     let fInfodatOption = fInfodat 
+                          |> Option.ofObj   
+                          |> optionToFileInfo "FileInfo()"
+     *)   
