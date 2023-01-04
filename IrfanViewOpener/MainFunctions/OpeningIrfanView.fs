@@ -33,15 +33,13 @@ let private myKeyPA =
 let private getLists low high (myMap: Map<string, int>) = 
 
     let getOption i =        
-        let cond = 
-            let aux = (low, high) ||> MakingWondersWithAux.getAux 
-            (<) (i + 1) aux  
-        
-        match cond with  //myKeyPA pouzita z vyukovych duvodu
-        | true  -> myMap
-                   |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
-                   |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
-        | false -> None     
+        let aux = (low, high) ||> MakingWondersWithAux.getAux 
+        (<) (i + 1) aux  
+        |> function         
+            | true  -> myMap  //myKeyPA pouzita z vyukovych duvodu
+                       |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
+                       |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
+            | false -> None     
     
     (*
     let getOption i =        
@@ -79,7 +77,7 @@ let private getLists low high (myMap: Map<string, int>) =
     let endFilesToOpenList = numberOfFilesList2 |> List.scan (+) 0 |> List.skip 1
                                                
     do printfn "endFilesToOpenList %A \n" <| endFilesToOpenList
-    numberOfFilesList1, endFilesToOpenList        
+    numberOfFilesList2, endFilesToOpenList        
 
 //2
 //impure kvuli vystupu na console a spusteni IrfanView
