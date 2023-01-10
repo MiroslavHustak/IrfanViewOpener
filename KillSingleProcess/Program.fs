@@ -18,8 +18,8 @@ module Process =
                           )
           ()                                            
        with  
-       |ex when (consoleApp = true)  -> 
-                                        do printfn "%s: %s" <| errorNumber <| string ex.Message
-                                        let result = Console.ReadKey()  
-                                        ()
-       |_  when (consoleApp = false) -> ()
+       | ex when (consoleApp = true)  -> 
+                                         do printfn "%s: %s" <| errorNumber <| string ex.Message
+                                         Console.ReadKey() |> ignore  
+                                         ()
+       | _  when (consoleApp = false) -> ()
