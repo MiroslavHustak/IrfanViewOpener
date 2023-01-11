@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="MyTypes\Strings.fs" />
     <Compile Include="MyTypes\DiscriminatedUnions.fs" />
     <Compile Include="MyTypes\Records.fs" />
     <Compile Include="Settings\Settings.fs" />

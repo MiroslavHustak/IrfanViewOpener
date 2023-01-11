@@ -4,7 +4,7 @@ open System
 open System.Diagnostics
 
 module Process =
-
+    
     //quli DLL pro potencialni pouziti v C# nazev je velkym + tuple
     let KillSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
        try          
