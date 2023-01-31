@@ -19,6 +19,7 @@ let readDataFromExcel x =
     let readData() =    
     
         //tady pouzito System.IO.File.Open(), staticka trida, pouziti jednorazove
+        //TODO try with
         use stream = File.Open(filepath, FileMode.Open, FileAccess.Read) //vyjimecne unmanaged scope, aby bylo mozne pouzit use    
 
         let excelReaderStream =  //vsimni si, jak si compiler vydedukuje string parametr z pouziti function (tj. match excelReaderStream fileExt with ...)
@@ -36,10 +37,12 @@ let readDataFromExcel x =
     
         let dtXlsxOption: DataTable option  = 
 
+            //TODO try with
             let fileExt = Path.GetExtension(filepath)
 
             match excelReaderStream fileExt with 
             | Some excelReader ->    
+                                //TODO try with
                                 use dtXlsx = excelReader.AsDataSet(                
                                                 new ExcelDataSetConfiguration (ConfigureDataTable = 
                                                     fun (_:IExcelDataReader) -> ExcelDataTableConfiguration (UseHeaderRow = true)
