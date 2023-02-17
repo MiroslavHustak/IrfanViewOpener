@@ -150,7 +150,7 @@ let openIrfanView param =
 
             let! _ = (<>) createdList List.Empty            
             let! _ = Seq.length <| myKey low low = (+) (rcO.prefix |> Seq.length) rcO.numberOfScannedFileDigits                  
-            let! _ =  myMap |> Map.containsKey (myKey low low) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
+            let! _ = myMap |> Map.containsKey (myKey low low) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
 
             let showScans = 
                 let getLists() = getLists 
