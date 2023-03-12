@@ -14,14 +14,16 @@ open ROP_Functions.MyFunctions
    
 let myRecord =   
     {
-        low = 1000 
-        high = 2000
-        myMap = Map.empty. 
-                    Add("LT-01760",2).
-                    Add("LT-01761",2).
-                    Add("LT-01763",5).
-                    Add("LT-01762",1).
-                    Add("LT-01764",10)
+        low = Low 1000 
+        high = High 2000
+        myMap = MyMap (
+                        Map.empty. 
+                            Add("LT-01760",2).
+                            Add("LT-01761",2).
+                            Add("LT-01763",5).
+                            Add("LT-01762",1).
+                            Add("LT-01764",10)
+                      )
     }
 
 //*****Deserializace z Json (string) formatu

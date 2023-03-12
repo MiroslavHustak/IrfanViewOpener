@@ -129,68 +129,67 @@ let getInputValues readFromExcel =
                ropResults() |> deconstructor 
        
             {  
-                low   = fst (fst resultDu)
-                high  = snd (fst resultDu)
-                myMap = snd resultDu   
+                low   = Low (fst (fst resultDu))
+                high  = High (snd (fst resultDu))
+                myMap = MyMap (snd resultDu)   
             }                  
         rcInitValDu    
     
     //second submain function
-    let secondInputDataGroup low high =   
-        
-            //createList 
-            //impure, bo Directory.EnumerateFiles a printfn
-            let createListInDirWithIncorrNoOfFiles = 
+    let secondInputDataGroup low high = 
+              
+        //createList        
+        let createListInDirWithIncorrNoOfFiles = 
     
-                let folderItem = sprintf "%s%s%s-%s%s" //u sprintf je typova kontrola  
-                                 <| rcO.prefix
-                                 <| stringChoice low 
-                                 <| string low 
-                                 <| stringChoice high 
-                                 <| string high   
+            let folderItem = sprintf "%s%s%s-%s%s" //u sprintf je typova kontrola  
+                                <| rcO.prefix
+                                <| stringChoice (low |> function Low value -> value)
+                                <| string (low |> function Low value -> value) 
+                                <| stringChoice (high |> function High value -> value)
+                                <| string (high |> function High value -> value)  
             
-                let dirWithIncorrNoOfFiles = sprintf "%s%s" 
-                                             <| string rcO.path
-                                             <| folderItem     
+            let dirWithIncorrNoOfFiles = sprintf "%s%s" 
+                                            <| string rcO.path
+                                            <| folderItem     
                  
-                try   //vyzkouseni si .NET exceptions
-                    try                       
-                        (*
-                        let dirInfo = new DirectoryInfo(dirWithIncorrNoOfFiles)                
-                        let dirInfoOption = dirInfo 
-                                            |> Option.ofObj   
-                                            |> optionToDirInfo "DirectoryInfo()"
+            try   //vyzkouseni si .NET exceptions
+                try                       
+                    (*
+                    let dirInfo = new DirectoryInfo(dirWithIncorrNoOfFiles)                
+                    let dirInfoOption = dirInfo 
+                                        |> Option.ofObj   
+                                        |> optionToDirInfo "DirectoryInfo()"
                         
-                        let mySeq = dirInfoOption.EnumerateFiles("*.jpg") //nelze kvuli tomu, ze to dava jiny typ, nez potrebujeme
-                                    |> Option.ofObj   
-                                    |> optionToEnumerable "dirInfoOption.EnumerateFiles()"  
+                    let mySeq = dirInfoOption.EnumerateFiles("*.jpg") //nelze kvuli tomu, ze to dava jiny typ, nez potrebujeme
+                                |> Option.ofObj   
+                                |> optionToEnumerable "dirInfoOption.EnumerateFiles()"  
                         
-                        match dirInfoOption.Exists with                         
-                        | true  -> List.ofSeq(mySeq)                                                 
-                        | false -> dirWithIncorrNoOfFiles |> error5   
-                                   List.Empty
-                       *)
+                    match dirInfoOption.Exists with                         
+                    | true  -> List.ofSeq(mySeq)                                                 
+                    | false -> dirWithIncorrNoOfFiles |> error5   
+                                List.Empty
+                    *)
                                   
-                        //2x staticka trida System.IO.Directory...., nebot nelze objekt dirInfo vyuzit 2x
-                        let mySeq = Directory.EnumerateFiles(dirWithIncorrNoOfFiles, "*.jpg")
-                                    |> Option.ofObj   
-                                    |> optionToEnumerable "Directory.EnumerateFiles()"     
+                    //2x staticka trida System.IO.Directory...., nebot nelze objekt dirInfo vyuzit 2x
+                    let mySeq = Directory.EnumerateFiles(dirWithIncorrNoOfFiles, "*.jpg")
+                                |> Option.ofObj   
+                                |> optionToEnumerable "Directory.EnumerateFiles()"     
                         
-                        match Directory.Exists(dirWithIncorrNoOfFiles) with   
-                        | true  -> List.ofSeq(mySeq)                                                 
-                        | false -> dirWithIncorrNoOfFiles |> error5   
-                                   List.Empty 
-                    finally
-                    () //zatim nepotrebne
-                with  
-                | :? System.IO.DirectoryNotFoundException as ex -> ex.Message |> error3
-                                                                   List.Empty                                                                                        
-                | :? System.IO.IOException as                ex -> ex.Message |> error4 
-                                                                   List.Empty
-                | _ as                                       ex -> ex.Message |> error1 //System.Exception
-                                                                   List.Empty           
+                    match Directory.Exists(dirWithIncorrNoOfFiles) with   
+                    | true  -> List.ofSeq(mySeq)                                                 
+                    | false -> dirWithIncorrNoOfFiles |> error5   
+                               List.Empty 
+                finally
+                () //zatim nepotrebne
+            with  
+            | :? System.IO.DirectoryNotFoundException as ex -> ex.Message |> error3
+                                                               List.Empty                                                                                        
+            | :? System.IO.IOException as                ex -> ex.Message |> error4 
+                                                               List.Empty
+            | _ as                                       ex -> ex.Message |> error1 //System.Exception
+                                                               List.Empty           
                                 
-            createListInDirWithIncorrNoOfFiles
+        createListInDirWithIncorrNoOfFiles
     
     let secondDataGroup = secondInputDataGroup
                           <| firstInputDataGroup.low 

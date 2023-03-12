@@ -15,12 +15,14 @@ let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits -
 let private stringChoicePA (x: string) = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
 
 //function 2
+(*
 let private myKey =  
     let key x y = sprintf "%s%s%s" 
                   <| rcO.prefix
                   <| string x 
                   <| string y  
     stringChoice >> key //dosazovani odleva
+*)
 
 //jen z vyukovych duvodu, tahle fce potrebuje string, myKey potrebuje int
 let private myKeyPA =  
@@ -137,20 +139,20 @@ let private (>>=) condition nextFunc = //symbol “»=” is the standard way of
 type private MyPatternBuilder = MyPatternBuilder with            
     member _.Bind(condition, nextFunc) = (>>=) <| condition <| nextFunc 
     member _.Return x = x
-
+    
 let openIrfanView param =  
     
      let (myRecordParams, createdList) = param
 
      MyPatternBuilder    
          {   
-            let low = myRecordParams.low
-            let high = myRecordParams.high 
-            let myMap = myRecordParams.myMap
+            let low = myRecordParams.low |> function Low value -> value                
+            let high = myRecordParams.high |> function High value -> value
+            let myMap = myRecordParams.myMap |> function MyMap value -> value 
 
             let! _ = (<>) createdList List.Empty            
-            let! _ = Seq.length <| myKey low low = (+) (rcO.prefix |> Seq.length) rcO.numberOfScannedFileDigits                  
-            let! _ = myMap |> Map.containsKey (myKey low low) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
+            let! _ = Seq.length <| myKeyPA (string low) (string low) = (+) (rcO.prefix |> Seq.length) rcO.numberOfScannedFileDigits                  
+            let! _ = myMap |> Map.containsKey (myKeyPA (string low) (string low)) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
 
             let showScans = 
                 let getLists() = getLists 
