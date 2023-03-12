@@ -1,5 +1,14 @@
 ﻿module Records
 
+(*   
+type InitialValuesRecord = 
+    {
+       low: int 
+       high: int
+       myMap: Map<string, int>
+    }
+*)
+
 //viz Isaac Abraham str 272 a dale
 //vyzkouseni si wrappers with SDCUs pro zabraneni mixing types
 
@@ -14,11 +23,4 @@ type InitialValuesRecord =
         myMap: MyMap
     }
 
-(*   
-type InitialValuesRecord = 
-    {
-       low: int 
-       high: int
-       myMap: Map<string, int>
-    }
-*) 
+ 

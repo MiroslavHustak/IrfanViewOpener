@@ -24,7 +24,7 @@ let private myKey =
     stringChoice >> key //dosazovani odleva
 *)
 
-//jen z vyukovych duvodu, tahle fce potrebuje string, myKey potrebuje int
+//z vyukovych duvodu - tahle fce potrebuje string, myKey potrebuje int
 let private myKeyPA =  
     let keyPA = sprintf "%s%s%s" rcO.prefix 
     stringChoicePA >> keyPA 
