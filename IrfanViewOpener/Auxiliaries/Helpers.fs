@@ -6,8 +6,9 @@ open System.Diagnostics
 open Errors
        
     module MyString = 
-        //priklad pouziti: GetString(8, "0")//tuple a nazev velkym kvuli DLL pro C#
-        let GetString (numberOfStrings: int, stringToAdd: string): string =   
+        //priklad pouziti: getString(8, "0")//tuple a compiled nazev velkym kvuli DLL pro C#
+        [<CompiledName "GetString">]
+        let getString (numberOfStrings: int, stringToAdd: string): string =   
             let initialString = String.Empty                //initial value of the string
             let listRange = [ 1 .. numberOfStrings ]
             let rec loop list acc auxStringToAdd =
@@ -17,10 +18,9 @@ open Errors
                                loop <| tail <| finalString <| auxStringToAdd
             loop <| listRange <| initialString <| stringToAdd
      
-   module Process = 
-        //nazev velkym plus tuple kvuli DLL pro C#
-        //tento program pouziva nize uvedeny kod v separatni DLL F#
-        let KillSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
+   module Process =        
+        [<CompiledName "KillSingleProcess">]
+        let killSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
            try          
               let iterateThroughProcess =
                   Process.GetProcessesByName(name)
@@ -46,7 +46,7 @@ open Errors
 
         let internal browseThroughScans() =   
             match Console.ReadKey().Key with
-            | ConsoleKey.Escape -> do KillSingleProcess("i_view32", "ERROR007", true) 
+            | ConsoleKey.Escape -> do killSingleProcess("i_view32", "ERROR007", true) 
             | ConsoleKey.Enter  -> () 
             | _                 -> pressEnterToContinue()
          

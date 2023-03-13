@@ -3,10 +3,10 @@
 open System
 open System.Diagnostics
 
-module Process =
-    
-    //quli DLL pro potencialni pouziti v C# nazev je velkym + tuple
-    let KillSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
+module Process =    
+   
+    [<CompiledName "KillSingleProcess">] //pro pouziti v projektu ExcelKilerDll
+    let killSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
        try          
           let iterateThroughProcess =
               Process.GetProcessesByName(name) 

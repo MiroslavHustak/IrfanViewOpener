@@ -11,8 +11,8 @@ open ROP_Functions.MyFunctions
 
 //******* DEFINITIONS OF FREQUENTLY CALLED FUNCTIONS       
 //function 1
-let private stringChoice x = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
-let private stringChoicePA (x: string) = MyString.GetString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
+let private stringChoice x = MyString.getString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
+let private stringChoicePA (x: string) = MyString.getString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
 
 //function 2
 (*

@@ -14,11 +14,11 @@ let private finalNotice() =
     0//konec programu
 
 let getRidOfItAll x =
-    do KillSingleProcess(x , "ERROR008", true)
+    do killSingleProcess(x , "ERROR008", true)
     finalNotice()//konec programu
     
 let closeApp x = //nahrazena rekurzivni funkci primo v modulu Start
     do printfn "Stiskni ENTER pro ukončení programu..."
     do pressEnterToContinue()
-    do KillSingleProcess(x , "ERROR009", true)//rc.imageViewer
+    do killSingleProcess(x , "ERROR009", true)//rc.imageViewer
     0//konec programu  
