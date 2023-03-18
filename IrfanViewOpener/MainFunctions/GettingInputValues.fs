@@ -109,14 +109,14 @@ let getInputValues readFromExcel =
                                           x :?> TaskResults
         
             let inputValues = 
-                let du = du |> List.item 0 |> whatIs 
+                let du = du |> List.head |> whatIs 
                 match du with 
                 | TupleIntInt(low, high) -> (low, high)                                                    
                 | _                      -> do error16 "error16 - TupleIntInt" 
                                             (-1, -1) //whatever of the particular type
           
             let myMap =                 
-                let du = du |> List.item 1 |> whatIs 
+                let du = du |> List.last |> whatIs 
                 match du with 
                 | MapStringInt value -> value                                           
                 | _                  -> do error16 "error16 - MapStringInt" 
