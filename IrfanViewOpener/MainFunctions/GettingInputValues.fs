@@ -51,8 +51,8 @@ let getInputValues readFromExcel =
                                        let cond = not ((myStringOP i).Contains(rcO.prefix)) 
                                        match cond with
                                        | false -> let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
-                                                  loop <| tail <| finalMap <| i + 1
-                                       | true  -> loop <| tail <| acc <| i + 1                                              
+                                                  loop tail finalMap (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
+                                       | true  -> loop tail acc (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984                                             
                                    checkRows   
                 loop listRange Map.empty 0
             myMap    
