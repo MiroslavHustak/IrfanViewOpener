@@ -58,7 +58,6 @@ let getInputValues readFromExcel =
             myMap    
          
         let getMyMap() =
-            failwith "bbbbbbb"
             match readFromExcel with 
             | Some value -> value |> createMyMap                                           
             | None       -> do error9() 
