@@ -58,6 +58,7 @@ let getInputValues readFromExcel =
             myMap    
          
         let getMyMap() =
+            failwith "bbbbbbb"
             match readFromExcel with 
             | Some value -> value |> createMyMap                                           
             | None       -> do error9() 
@@ -84,8 +85,7 @@ let getInputValues readFromExcel =
             low, high       
     
         //Async for learning purposes only - async jinak vubec neni vhodny v console app, neb se prekryvaji chybova hlaseni  
-        let myTaskFunctionDU x =      
-
+        let myTaskFunctionDU x =    
             let task3 param = async { return TupleIntInt param }
             let task4 param = async { return MapStringInt param }  
             
