@@ -71,11 +71,12 @@ let createCustomer1 customerId email telephone address =
         Address1 = address 
     }
 
-let customer1 =  createCustomer1
-                 <|  CustomerId1 "C-123"
-                 <|  Email1 "nicki@myemail.com"
-                 <|  Telephone1 "029-293-23"
-                 <|  Address1 "1 The Street"
+let customer1 =  
+    createCustomer1
+    <|  CustomerId1 "C-123"
+    <|  Email1 "nicki@myemail.com"
+    <|  Telephone1 "029-293-23"
+    <|  Address1 "1 The Street"
 
 //********************************************************
 
@@ -101,9 +102,10 @@ let createCustomer2 customerId oneContactDetail =
         ContactDetails = oneContactDetail
     }
    
-let customer2 = createCustomer2
-                <| CustomerId2 "Nicki"
-                <| Email2 "nicki@myemail.com"
+let customer2 = 
+    createCustomer2
+    <| CustomerId2 "Nicki"
+    <| Email2 "nicki@myemail.com"
 
 //****************************************************************************
 

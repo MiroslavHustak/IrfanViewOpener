@@ -17,12 +17,12 @@ let myRecord =
         low = Low 1000 
         high = High 2000
         myMap = MyMap (
-                        Map.empty. 
-                            Add("LT-01760",2).
-                            Add("LT-01761",2).
-                            Add("LT-01763",5).
-                            Add("LT-01762",1).
-                            Add("LT-01764",10)
+                          Map.empty. 
+                              Add("LT-01760",2).
+                              Add("LT-01761",2).
+                              Add("LT-01763",5).
+                              Add("LT-01762",1).
+                              Add("LT-01764",10)
                       )
     }
 
@@ -32,21 +32,27 @@ let jsonText = """{"low":1760,"high":1761,"myMap":{"LT-01760":2,"LT-01761":2,"LT
 let deSerializeFromJson = JsonConvert.DeserializeObject<InitialValuesRecord>(jsonText) 
    
 //*****Serializace typu Record do Json a zpetna deserializace  
-let serializeIntoJson = JsonConvert.SerializeObject(myRecord)
-                        |> Option.ofObj
-                        |> optionToString1   
+let serializeIntoJson = 
+    JsonConvert.SerializeObject(myRecord)
+    |> Option.ofObj
+    |> optionToString1   
+
 let deSerializeFromJson0 = JsonConvert.DeserializeObject<InitialValuesRecord>(serializeIntoJson)
 
 //*****Serializace dalsiho typu Record do Json a zpetna deserializace 
-let serializeIntoJson1 = JsonConvert.SerializeObject(OpenIrfanView_Settings.Default) 
-                        |> Option.ofObj
-                        |> optionToString1   
+let serializeIntoJson1 = 
+    JsonConvert.SerializeObject(OpenIrfanView_Settings.Default) 
+    |> Option.ofObj
+    |> optionToString1   
+
 let deSerializeFromJson1 = JsonConvert.DeserializeObject<OpenIrfanView_Settings>(serializeIntoJson1)
 
 //*****Serializace Json formatu do binarniho souboru a zpetna deserializace    
-let filepath = Path.GetFullPath("json.dat")     
-                |> Option.ofObj
-                |> optionToString1   
+let filepath = 
+    Path.GetFullPath("json.dat")     
+    |> Option.ofObj
+    |> optionToString1   
+
 let binaryFormatter: BinaryFormatter = new BinaryFormatter() 
 
 //funguje to i s OpenIrfanView_Settings

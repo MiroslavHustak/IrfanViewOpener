@@ -28,11 +28,14 @@ let readDataFromExcel x =
             let excelReaderXlsF stream = ExcelReaderFactory.CreateBinaryReader(stream)//pouze pro rozsireni programu o vyber excel souboru         
   
             function //vsimni si, jak si compiler vydedukuje parametr fileExt
-            | ".xlsx" -> let myStream = stream |> excelReaderXlsxF  
+            | ".xlsx" -> 
+                         let myStream = stream |> excelReaderXlsxF  
                          myStream |> Option.ofObj
-            | ".xls"  -> let myStream = stream |> excelReaderXlsF //tohle v teto app nikdy nenastane, neb mam nastaveny natvrdo mustr.xlsx, ne xls
+            | ".xls"  -> 
+                         let myStream = stream |> excelReaderXlsF //tohle v teto app nikdy nenastane, neb mam nastaveny natvrdo mustr.xlsx, ne xls
                          myStream |> Option.ofObj
-            | _       -> let myStream = None  
+            | _       -> 
+                         let myStream = None  
                          myStream 
     
         let dtXlsxOption: DataTable option  = 
@@ -89,14 +92,17 @@ let readDataFromExcel x =
                 File.Exists(filepath)
                 |> function
                     | true  -> readData() |> adaptDtXlsx //reading from Excel
-                    | false -> do error8()
+                    | false -> 
+                               do error8()
                                None                                              
             finally
             () //zatim nepotrebne
         with                                                                                               
-        | :? System.IO.IOException as ex -> ex.Message |> error12 
+        | :? System.IO.IOException as ex -> 
+                                            ex.Message |> error12 
                                             None
-        | _ as                        ex -> ex.Message |> error1 //System.Exception
+        | _ as                        ex -> 
+                                            ex.Message |> error1 //System.Exception
                                             None
     readFromExcel            
 
@@ -110,7 +116,8 @@ let readDataFromExcel x =
 
      (*
      let fInfodat: FileInfo = new FileInfo(filepath)                 
-     let fInfodatOption = fInfodat 
-                          |> Option.ofObj   
-                          |> optionToFileInfo "FileInfo()"
+     let fInfodatOption = 
+         fInfodat 
+         |> Option.ofObj   
+         |> optionToFileInfo "FileInfo()"
      *)   

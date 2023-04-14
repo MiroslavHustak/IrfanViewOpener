@@ -28,19 +28,24 @@ let getInputValues readFromExcel =
     let firstInputDataGroup = 
 
         let createMyMap (dtXlsx: DataTable) =  //compiler nedokazal dedukovat typ DataTable u parametru         
-            let dtXlsxRows = dtXlsx.Rows      
+            let dtXlsxRows = dtXlsx.Rows   
+            
             let myIntNumber i = 
                 let columnNumber2 = rc.columnIndex |> Array.last //sloupec P 
-                let aux = dtXlsxRows.[i].[columnNumber2] 
-                          |> string 
-                          |> Option.ofObj            
+                let aux =
+                    dtXlsxRows.[i].[columnNumber2] 
+                    |> string 
+                    |> Option.ofObj            
                 Parsing1.parseMe1(optionToString aux)
+
             let myStringOP i = 
                 let columnNumber1 = rc.columnIndex |> Array.head //sloupec A
-                let aux = dtXlsxRows.[i].[columnNumber1] 
-                          |> string 
-                          |> Option.ofObj 
+                let aux = 
+                    dtXlsxRows.[i].[columnNumber1] 
+                    |> string 
+                    |> Option.ofObj 
                 optionToString aux
+
             let myMap: Map<string, int> = //neco na zpusob Dictionary<key, value>, key stejne jako v C# nemusi byt int
                 let dtXlsxRowsCount = dtXlsxRows.Count                       
                 let listRange = [ 0 .. dtXlsxRowsCount - 1 ]
@@ -50,7 +55,8 @@ let getInputValues readFromExcel =
                     | _ :: tail -> let checkRows = 
                                        let cond = not ((myStringOP i).Contains(rcO.prefix)) 
                                        match cond with
-                                       | false -> let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
+                                       | false -> 
+                                                  let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
                                                   loop tail finalMap (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
                                        | true  -> loop tail acc (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984                                             
                                    checkRows   
@@ -60,15 +66,14 @@ let getInputValues readFromExcel =
         let getMyMap() =
             match readFromExcel with 
             | Some value -> value |> createMyMap                                           
-            | None       -> do error9() 
+            | None       -> 
+                            do error9() 
                             Map.empty    
 
         let getInputValuesUI() =  
             do printfn "Prosím zadej vstupní hodnoty" 
             let p name again = 
-                do printfn "Zadej %s číselnou část LT %s" 
-                   <| name 
-                   <| again                
+                printfn "Zadej %s číselnou část LT %s" name again
                 Parsing.parseMe(Console.ReadLine())          
    
             let fullParse() =         
@@ -97,7 +102,8 @@ let getInputValues readFromExcel =
                                        |> Async.RunSynchronously
                                        |> function
                                            | Choice1Of2 result    -> result |> List.ofArray
-                                           | Choice2Of2 (ex: exn) -> do printfn "Popis chyby async 2: %s" <| ex.Message
+                                           | Choice2Of2 (ex: exn) -> 
+                                                                     do printfn "Popis chyby async 2: %s" <| ex.Message
                                                                      do error11()
                                                                      List.empty  
 
@@ -111,14 +117,16 @@ let getInputValues readFromExcel =
                 let du = du |> List.head |> whatIs 
                 match du with 
                 | TupleIntInt(low, high) -> (low, high)                                                    
-                | _                      -> do error16 "error16 - TupleIntInt" 
+                | _                      -> 
+                                            do error16 "error16 - TupleIntInt" 
                                             (-1, -1) //whatever of the particular type
           
             let myMap =                 
                 let du = du |> List.last |> whatIs 
                 match du with 
                 | MapStringInt value -> value                                           
-                | _                  -> do error16 "error16 - MapStringInt" 
+                | _                  -> 
+                                        do error16 "error16 - MapStringInt" 
                                         Map.empty                                             
             inputValues, myMap 
         
@@ -140,59 +148,66 @@ let getInputValues readFromExcel =
         //createList        
         let createListInDirWithIncorrNoOfFiles = 
     
-            let folderItem = sprintf "%s%s%s-%s%s" //u sprintf je typova kontrola  
-                                <| rcO.prefix
-                                <| stringChoice (low |> function Low value -> value)
-                                <| string (low |> function Low value -> value) 
-                                <| stringChoice (high |> function High value -> value)
-                                <| string (high |> function High value -> value)  
+            let folderItem = 
+                sprintf "%s%s%s-%s%s" //u sprintf je typova kontrola  
+                <| rcO.prefix
+                <| stringChoice (low |> function Low value -> value)
+                <| string (low |> function Low value -> value) 
+                <| stringChoice (high |> function High value -> value)
+                <| string (high |> function High value -> value)  
             
-            let dirWithIncorrNoOfFiles = sprintf "%s%s" 
-                                            <| string rcO.path
-                                            <| folderItem     
+            let dirWithIncorrNoOfFiles = 
+                sprintf "%s%s" <| string rcO.path <| folderItem                                                 
                  
             try   //vyzkouseni si .NET exceptions
                 try                       
                     (*
                     let dirInfo = new DirectoryInfo(dirWithIncorrNoOfFiles)                
-                    let dirInfoOption = dirInfo 
-                                        |> Option.ofObj   
-                                        |> optionToDirInfo "DirectoryInfo()"
+                    let dirInfoOption = 
+                        dirInfo 
+                        |> Option.ofObj   
+                        |> optionToDirInfo "DirectoryInfo()"
                         
-                    let mySeq = dirInfoOption.EnumerateFiles("*.jpg") //nelze kvuli tomu, ze to dava jiny typ, nez potrebujeme
-                                |> Option.ofObj   
-                                |> optionToEnumerable "dirInfoOption.EnumerateFiles()"  
+                    let mySeq = 
+                        dirInfoOption.EnumerateFiles("*.jpg") //nelze kvuli tomu, ze to dava jiny typ, nez potrebujeme
+                        |> Option.ofObj   
+                        |> optionToEnumerable "dirInfoOption.EnumerateFiles()"  
                         
                     match dirInfoOption.Exists with                         
                     | true  -> List.ofSeq(mySeq)                                                 
-                    | false -> dirWithIncorrNoOfFiles |> error5   
-                                List.Empty
+                    | false -> 
+                               dirWithIncorrNoOfFiles |> error5   
+                               List.Empty
                     *)
                                   
                     //2x staticka trida System.IO.Directory...., nebot nelze objekt dirInfo vyuzit 2x
-                    let mySeq = Directory.EnumerateFiles(dirWithIncorrNoOfFiles, "*.jpg")
-                                |> Option.ofObj   
-                                |> optionToEnumerable "Directory.EnumerateFiles()"     
+                    let mySeq = 
+                        Directory.EnumerateFiles(dirWithIncorrNoOfFiles, "*.jpg")
+                        |> Option.ofObj   
+                        |> optionToEnumerable "Directory.EnumerateFiles()"     
                         
                     match Directory.Exists(dirWithIncorrNoOfFiles) with   
                     | true  -> List.ofSeq(mySeq)                                                 
-                    | false -> dirWithIncorrNoOfFiles |> error5   
+                    | false -> 
+                               dirWithIncorrNoOfFiles |> error5   
                                List.Empty 
                 finally
                 () //zatim nepotrebne
             with  
-            | :? System.IO.DirectoryNotFoundException as ex -> ex.Message |> error3
+            | :? System.IO.DirectoryNotFoundException as ex -> 
+                                                               ex.Message |> error3
                                                                List.Empty                                                                                        
-            | :? System.IO.IOException as                ex -> ex.Message |> error4 
+            | :? System.IO.IOException as                ex -> 
+                                                               ex.Message |> error4 
                                                                List.Empty
-            | _ as                                       ex -> ex.Message |> error1 //System.Exception
+            | _ as                                       ex -> 
+                                                               ex.Message |> error1 //System.Exception
                                                                List.Empty           
                                 
         createListInDirWithIncorrNoOfFiles
     
-    let secondDataGroup = secondInputDataGroup
-                          <| firstInputDataGroup.low 
-                          <| firstInputDataGroup.high     
+    let secondDataGroup = 
+        secondInputDataGroup firstInputDataGroup.low firstInputDataGroup.high     
     
     firstInputDataGroup, secondDataGroup        
    

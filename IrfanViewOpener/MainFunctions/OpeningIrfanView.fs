@@ -17,10 +17,11 @@ let private stringChoicePA (x: string) = MyString.getString((rcO.numberOfScanned
 //function 2
 (*
 let private myKey =  
-    let key x y = sprintf "%s%s%s" 
-                  <| rcO.prefix
-                  <| string x 
-                  <| string y  
+    let key x y = 
+        sprintf "%s%s%s" 
+        <| rcO.prefix
+        <| string x 
+        <| string y  
     stringChoice >> key //dosazovani odleva
 *)
 
@@ -38,7 +39,8 @@ let private getLists low high (myMap: Map<string, int>) =
         let aux = (low, high) ||> MakingWondersWithAux.getAux 
         (<) (i + 1) aux  
         |> function         
-            | true  -> myMap  //myKeyPA pouzita z vyukovych duvodu
+            | true  ->
+                       myMap  //myKeyPA pouzita z vyukovych duvodu
                        |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
                        |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
             | false -> None     
@@ -47,7 +49,8 @@ let private getLists low high (myMap: Map<string, int>) =
     let getOption i =        
         //see the code above
         match cond with  //myKeyPA pouzita z vyukovych duvodu
-        | true  -> myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
+        | true  -> 
+                   myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) //Map.tryFind je funkce //Vyraz musi byt zavisly na i   
                    |> function                                                     
                       | Some value -> Some (value, (i + 1))                                                        
                       | None       -> None    
@@ -66,7 +69,8 @@ let private getLists low high (myMap: Map<string, int>) =
                                         let aux = (low, high) ||> MakingWondersWithAux.getAux 
                                         (<) (i + 1) aux       
                                     match cond with  
-                                    | true  -> match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                    | true  -> 
+                                               match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
                                                | Some value -> yield value
                                                | None       -> ()   
                                     | false -> ()
@@ -93,9 +97,10 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
                         let pathWithArgument() = 
                             match (item - 1) >= listOfFilesLength with
                             | true  ->                                
-                                     let str = sprintf"%s %s"         
-                                               <| "\nNásledující počet skenů v excel. tabulce je vyšší než realita o hodnotu"
-                                               <| string (item - listOfFilesLength)
+                                     let str = 
+                                        sprintf"%s %s"         
+                                        <| "\nNásledující počet skenů v excel. tabulce je vyšší než realita o hodnotu"
+                                        <| string (item - listOfFilesLength)
                                      do printfn "%s" <| str
                                      let path = string <| listOfFiles.Item (listOfFilesLength - 1) 
                                      path 
@@ -115,12 +120,13 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
                                      
                         let printIt() = 
                             let lastXyCharacters = pathWithArgument.Substring((pathWithArgument.Length - rcO.suffixAndExtLength), rcO.suffixAndExtLength)
-                            let str = sprintf"%s%s [%s] %s %s" 
-                                      <| rcO.prefix
-                                      <| string (i + low) 
-                                      <| string (numberOfFilesList.Item i) 
-                                      <| "Press ENTER to continue (Esc for IrView closure)" 
-                                      <| lastXyCharacters                                    
+                            let str = 
+                                sprintf"%s%s [%s] %s %s" 
+                                <| rcO.prefix
+                                <| string (i + low) 
+                                <| string (numberOfFilesList.Item i) 
+                                <| "Press ENTER to continue (Esc for IrView closure)" 
+                                <| lastXyCharacters                                    
                             do printfn "%s" str   
                         printIt()       
                         
@@ -155,14 +161,8 @@ let openIrfanView param =
             let! _ = myMap |> Map.containsKey (myKeyPA (string low) (string low)) //argumenty fce su v takovem poradi: Map.containsKey key table, takze bez |> bude Map.containsKey (myKey low low) myMap          
 
             let showScans = 
-                let getLists() = getLists 
-                                 <| low
-                                 <| high 
-                                 <| myMap        
-                do showLastScannedFiles 
-                   <| createdList 
-                   <| getLists() 
-                   <| low
+                let getLists() = getLists low high myMap
+                do showLastScannedFiles <| createdList <| getLists() <| low                   
                 0
                 //closeApp <| rc.imageViewerProcess //nahrazeno rekurzivni funkci pro opakovani programu, a to aji s nekterymi exceptions             
             return showScans

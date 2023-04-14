@@ -9,7 +9,8 @@ let errorTemplate1 str =
     do Console.SetCursorPosition(0, 5)
     do printf "Opakovaně stiskni jakékoliv tlačítko pro ukončení programu... \n"
     do Console.ReadKey() |> ignore 
-    do System.Environment.Exit(1)  
+    do System.Environment.Exit(1) 
+    
 let errorTemplate2 str ex n = 
     do Console.Clear()
     do printf "%s" str
@@ -17,10 +18,12 @@ let errorTemplate2 str ex n =
     do printf "Stiskni jakékoliv tlačítko pro ukončení programu... (ERROR00%s) \n" n
     do Console.ReadKey() |> ignore 
     do System.Environment.Exit(1) 
+
 let errorTemplate2a str ex n = 
     do Console.Clear()
     do printf "%s" str
     do printf "Popis chyby ERROR00%s: %s \n" n (string  ex)
+
 let errorTemplate3 str ex n = 
     do Console.Clear()
     do printf "%s" str
