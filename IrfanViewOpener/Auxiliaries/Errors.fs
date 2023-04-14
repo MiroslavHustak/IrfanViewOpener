@@ -47,11 +47,9 @@ let error6 s =
         str |> Seq.forall (fun item -> item = (char)32)  //A string is a sequence of characters => use Seq.forall to test directly
     let str =               
         match s with
-        | "" -> let str = "EMPTY STRING"
-                str
-        | _     when strContainsOnlySpace s -> let str = "SPACE"
-                                               str
-        | _  -> s                              
+        | ""                            -> "EMPTY STRING"
+        | _ when strContainsOnlySpace s -> "SPACE"                                               
+        | _                             -> s                  
     do str |> printfn "ERROR006: Vložená hodnota [%s] buď není celé číslo, anebo přesahuje rozsah Int32. Zadej znovu." 
 
  //b) variant with match without active patterns (for learning purposes)
