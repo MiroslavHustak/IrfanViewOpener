@@ -52,7 +52,8 @@ let getInputValues readFromExcel =
                 let rec loop list acc i =   //viz podrobna verze IrfanViewOpener - pro porovnani je tam tvorba Map pomoci seq nebo array nebo list
                     match list with 
                     | []        -> acc
-                    | _ :: tail -> let checkRows = 
+                    | _ :: tail -> 
+                                   let checkRows = 
                                        let cond = not ((myStringOP i).Contains(rcO.prefix)) 
                                        match cond with
                                        | false -> 
