@@ -6,18 +6,21 @@ open System.Diagnostics
 open Errors
        
     module MyString = 
+                
         //priklad pouziti: getString(8, "0")//tuple a compiled nazev velkym kvuli DLL pro C#
-        [<CompiledName "GetString">]
+        [<CompiledName "GetString">] 
         let getString (numberOfStrings: int, stringToAdd: string): string =   
-            let initialString = String.Empty                //initial value of the string
-            let listRange = [ 1 .. numberOfStrings ]
-            let rec loop list acc auxStringToAdd =
+            let initialString = String.Empty   //initial value of the string
+            let listRange = [ 1 .. numberOfStrings ]            
+            let rec loop list acc =
                 match list with 
-                | []        -> acc
+                | []        ->
+                             acc
                 | _ :: tail -> 
-                               let finalString = (+) acc auxStringToAdd
-                               loop tail finalString auxStringToAdd //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
-            loop listRange initialString stringToAdd //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
+                             let finalString = (+) acc stringToAdd  
+                             loop tail finalString  //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
+        
+            loop listRange initialString
      
    module Process =        
         [<CompiledName "KillSingleProcess">]
