@@ -39,14 +39,10 @@ let private getLists low high (myMap: Map<string, int>) =
         let aux = (low, high) ||> MakingWondersWithAux.getAux 
         (<) (i + 1) aux  
         |> function         
-            | true  -> //myKeyPA pouzita z vyukovych duvodu                         
-                     match myMap = Map.empty with
-                     | true  -> 
-                              None
-                     | false -> 
-                              myMap
-                              |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
-                              |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
+            | true  -> //myKeyPA pouzita z vyukovych duvodu   
+                     myMap
+                     |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
+                     |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
             | false -> 
                      None     
     
