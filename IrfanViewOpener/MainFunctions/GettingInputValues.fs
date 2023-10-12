@@ -31,19 +31,27 @@ let getInputValues readFromExcel =
             let dtXlsxRows = dtXlsx.Rows   
             
             let myIntNumber i = 
-                let columnNumber2 = rc.columnIndex |> Array.last //sloupec P 
+                let columnNumber2 = rc.columnIndex |> Array.tryLast //sloupec P                   
                 let aux =
-                    dtXlsxRows.[i].[columnNumber2] 
-                    |> string 
-                    |> Option.ofObj            
+                    columnNumber2 
+                    |> Option.bind 
+                        (fun value -> 
+                                    dtXlsxRows.[i].[value] 
+                                    |> string 
+                                    |> Option.ofObj
+                        )                    
                 Parsing1.parseMe1(optionToString aux)
 
             let myStringOP i = 
-                let columnNumber1 = rc.columnIndex |> Array.head //sloupec A
+                let columnNumber1 = rc.columnIndex |> Array.tryHead //sloupec A                  
                 let aux = 
-                    dtXlsxRows.[i].[columnNumber1] 
-                    |> string 
-                    |> Option.ofObj 
+                    columnNumber1 
+                    |> Option.bind 
+                        (fun value -> 
+                                    dtXlsxRows.[i].[value]  
+                                    |> string 
+                                    |> Option.ofObj
+                        ) 
                 optionToString aux
 
             let myMap: Map<string, int> = //neco na zpusob Dictionary<key, value>, key stejne jako v C# nemusi byt int

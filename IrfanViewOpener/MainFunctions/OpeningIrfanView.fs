@@ -39,11 +39,16 @@ let private getLists low high (myMap: Map<string, int>) =
         let aux = (low, high) ||> MakingWondersWithAux.getAux 
         (<) (i + 1) aux  
         |> function         
-            | true  ->
-                       myMap  //myKeyPA pouzita z vyukovych duvodu
-                       |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
-                       |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
-            | false -> None     
+            | true  -> //myKeyPA pouzita z vyukovych duvodu                         
+                     match myMap = Map.empty with
+                     | true  -> 
+                              None
+                     | false -> 
+                              myMap
+                              |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1)))   
+                              |> Option.bind (fun value -> Some (value, (i + 1))) //Tohle iteruje List.unfold getValue (-1)  
+            | false -> 
+                     None     
     
     (*
     let getOption i =        
@@ -70,9 +75,13 @@ let private getLists low high (myMap: Map<string, int>) =
                                         (<) (i + 1) aux       
                                     match cond with  
                                     | true  -> 
-                                               match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
-                                               | Some value -> yield value
-                                               | None       -> ()   
+                                               match myMap = Map.empty with
+                                               | true  -> 
+                                                        ()
+                                               | false -> 
+                                                        match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                                        | Some value -> yield value
+                                                        | None       -> ()   
                                     | false -> ()
                                 ]                                                 
                         ) 
