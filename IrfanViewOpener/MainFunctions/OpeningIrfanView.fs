@@ -150,12 +150,20 @@ let private (>>=) condition nextFunc = //symbol “»=” is the standard way of
 type private MyPatternBuilder = MyPatternBuilder with            
     member _.Bind(condition, nextFunc) = (>>=) <| condition <| nextFunc 
     member _.Return x = x
+
+//zkouska alternativniho reseni s class a parametrem     
+type private MyPatternBuilder1 (param: Lazy<int>) =             
+    member _.Bind(condition, nextFunc) = 
+        match condition with
+        | false -> param.Force()
+        | true  -> nextFunc()      
+    member _.Return x = x
     
 let openIrfanView param =  
     
      let (myRecordParams, createdList) = param
 
-     MyPatternBuilder    
+     MyPatternBuilder1 (lazy (rc.imageViewerProcess |> getRidOfItAll))     
          {   
             let low = myRecordParams.low |> function Low value -> value                
             let high = myRecordParams.high |> function High value -> value
