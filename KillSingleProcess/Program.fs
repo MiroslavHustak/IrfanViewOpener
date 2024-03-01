@@ -11,15 +11,17 @@ module Process =
           let iterateThroughProcess =
               Process.GetProcessesByName(name) 
               |> Array.toList 
-              |> List.map (fun item -> 
-                                      match (item.ProcessName |> String.IsNullOrEmpty) with
-                                      | true  -> ()
-                                      | false -> item.Kill() 
-                          )
+              |> List.map 
+                  (fun item -> 
+                             match (item.ProcessName |> String.IsNullOrEmpty) with
+                             | true  -> ()
+                             | false -> item.Kill() 
+                 )
           ()                                            
        with  
        | ex when (consoleApp = true)  -> 
-                                         do printfn "%s: %s" <| errorNumber <| string ex.Message
-                                         Console.ReadKey() |> ignore  
-                                         ()
-       | _  when (consoleApp = false) -> ()
+                                       do printfn "%s: %s" <| errorNumber <| string ex.Message
+                                       Console.ReadKey() |> ignore  
+                                       ()
+       | _  when (consoleApp = false) ->
+                                       ()

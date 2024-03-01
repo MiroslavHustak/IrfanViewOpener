@@ -19,8 +19,6 @@ open ROP_Functions.MyFunctions
 let private stringChoice x = MyString.getString((rcO.numberOfScannedFileDigits - Seq.length (x |> string)), rcO.stringZero)
 
 //******* MAIN FUNCTION (tady je jen jedna) ****************************
-//nested functions, vstup data typu datatable option, vystup jsou opet data, tentokrat tuple typu record * ... (partial application)
-//impure (logicky, stale bereme data z okolniho "impure" prostredi)
 
 let getInputValues readFromExcel =  
     
@@ -59,25 +57,28 @@ let getInputValues readFromExcel =
                 let listRange = [ 0 .. dtXlsxRowsCount - 1 ]
                 let rec loop list acc i =   //viz podrobna verze IrfanViewOpener - pro porovnani je tam tvorba Map pomoci seq nebo array nebo list
                     match list with 
-                    | []        -> acc
+                    | []        -> 
+                                 acc
                     | _ :: tail -> 
-                                   let checkRows = 
-                                       let cond = not ((myStringOP i).Contains(rcO.prefix)) 
-                                       match cond with
-                                       | false -> 
-                                                  let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
-                                                  loop tail finalMap (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
-                                       | true  -> loop tail acc (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984                                             
-                                   checkRows   
+                                 let checkRows = 
+                                     let cond = not ((myStringOP i).Contains(rcO.prefix)) 
+                                     match cond with
+                                     | false -> 
+                                              let finalMap = Map.add (myStringOP i) (myIntNumber i) acc
+                                              loop tail finalMap (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984
+                                     | true  ->
+                                              loop tail acc (i + 1) //Tail-recursive function calls that have their parameters passed by the pipe operator are not optimized as loops #6984                                             
+                                 checkRows   
                 loop listRange Map.empty 0
             myMap    
          
         let getMyMap() =
             match readFromExcel with 
-            | Some value -> value |> createMyMap                                           
+            | Some value -> 
+                          value |> createMyMap                                           
             | None       -> 
-                            do error9() 
-                            Map.empty    
+                          do error9() 
+                          Map.empty    
 
         let getInputValuesUI() =  
             do printfn "Prosím zadej vstupní hodnoty" 
@@ -110,33 +111,38 @@ let getInputValues readFromExcel =
                                        |> Async.Catch
                                        |> Async.RunSynchronously
                                        |> function
-                                           | Choice1Of2 result    -> result |> List.ofArray
+                                           | Choice1Of2 result    -> 
+                                                                   result |> List.ofArray
                                            | Choice2Of2 (ex: exn) -> 
-                                                                     do printfn "Popis chyby async 2: %s" <| ex.Message
-                                                                     do error11()
-                                                                     List.empty  
+                                                                   do printfn "Popis chyby async 2: %s" <| ex.Message
+                                                                   do error11()
+                                                                   List.empty  
 
             let whatIs(x: obj) =  //primy dynamic cast :?> TaskResults muze vest k chybe behem runtime
                 match x with
-                | :? TaskResults as du -> du  //aby nedoslo k chybe behem runtime
-                | _                    -> do error16 "error16 - x :?> TaskResults"                                      
-                                          x :?> TaskResults
+                | :? TaskResults as du -> 
+                                        du  //aby nedoslo k chybe behem runtime
+                | _                    ->
+                                        do error16 "error16 - x :?> TaskResults"                                      
+                                        x :?> TaskResults
         
             let inputValues = 
                 let du = du |> List.head |> whatIs 
                 match du with 
-                | TupleIntInt(low, high) -> (low, high)                                                    
+                | TupleIntInt(low, high) -> 
+                                          (low, high)                                                    
                 | _                      -> 
-                                            do error16 "error16 - TupleIntInt" 
-                                            (-1, -1) //whatever of the particular type
+                                          do error16 "error16 - TupleIntInt" 
+                                          (-1, -1) //whatever of the particular type
           
             let myMap =                 
                 let du = du |> List.last |> whatIs 
                 match du with 
-                | MapStringInt value -> value                                           
+                | MapStringInt value ->
+                                      value                                           
                 | _                  -> 
-                                        do error16 "error16 - MapStringInt" 
-                                        Map.empty                                             
+                                      do error16 "error16 - MapStringInt" 
+                                      Map.empty                                             
             inputValues, myMap 
         
         let rcInitValDu = 
@@ -196,22 +202,23 @@ let getInputValues readFromExcel =
                         |> optionToEnumerable "Directory.EnumerateFiles()"     
                         
                     match Directory.Exists(dirWithIncorrNoOfFiles) with   
-                    | true  -> List.ofSeq(mySeq)                                                 
+                    | true  -> 
+                             List.ofSeq(mySeq)                                                 
                     | false -> 
-                               dirWithIncorrNoOfFiles |> error5   
-                               List.Empty 
+                             dirWithIncorrNoOfFiles |> error5   
+                             List.Empty 
                 finally
                 () //zatim nepotrebne
             with  
             | :? System.IO.DirectoryNotFoundException as ex -> 
-                                                               ex.Message |> error3
-                                                               List.Empty                                                                                        
+                                                             ex.Message |> error3
+                                                             List.Empty                                                                                        
             | :? System.IO.IOException as                ex -> 
-                                                               ex.Message |> error4 
-                                                               List.Empty
+                                                             ex.Message |> error4 
+                                                             List.Empty
             | _ as                                       ex -> 
-                                                               ex.Message |> error1 //System.Exception
-                                                               List.Empty           
+                                                             ex.Message |> error1 //System.Exception
+                                                             List.Empty           
                                 
         createListInDirWithIncorrNoOfFiles
     

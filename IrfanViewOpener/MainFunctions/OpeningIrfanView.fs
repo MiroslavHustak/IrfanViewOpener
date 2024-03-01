@@ -64,23 +64,25 @@ let private getLists low high (myMap: Map<string, int>) =
     //Alternative code based on Brian Berns' answer to my question https://stackoverflow.com/questions/67267040/populating-immutable-lists-in-a-cycle
     let numberOfFilesList2 =       
         [ -1 .. myMap.Count - 1 ] 
-        |> List.collect (fun i ->                                         
-                                [
-                                    let cond = 
-                                        let aux = (low, high) ||> MakingWondersWithAux.getAux 
-                                        (<) (i + 1) aux       
-                                    match cond with  
-                                    | true  -> 
-                                               match myMap = Map.empty with
-                                               | true  -> 
-                                                        ()
-                                               | false -> 
-                                                        match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
-                                                        | Some value -> yield value
-                                                        | None       -> ()   
-                                    | false -> ()
-                                ]                                                 
-                        ) 
+        |> List.collect
+            (fun i ->                                         
+                    [
+                        let cond = 
+                            let aux = (low, high) ||> MakingWondersWithAux.getAux 
+                            (<) (i + 1) aux       
+                        match cond with  
+                        | true  -> 
+                                 match myMap = Map.empty with
+                                 | true  -> 
+                                          ()
+                                 | false -> 
+                                          match myMap |> Map.tryFind (myKeyPA <| string (low + 1) <| string (low + (i + 1))) with
+                                          | Some value -> yield value
+                                          | None       -> ()   
+                        | false -> 
+                                 ()
+                    ]                                                 
+            ) 
 
     do printfn "numberOfFilesList2 %A \n" <| numberOfFilesList2      
     do printfn "numberOfFilesList1 %A \n" <| numberOfFilesList1
@@ -99,43 +101,43 @@ let private showLastScannedFiles (listOfFiles: string list) ((numberOfFilesList,
     endFilesToOpenList 
     |> List.iteri
           (fun i item -> 
-                        let pathWithArgument() = 
-                            match (item - 1) >= listOfFilesLength with
-                            | true  ->                                
-                                     let str = 
-                                        sprintf"%s %s"         
-                                        <| "\nNásledující počet skenů v excel. tabulce je vyšší než realita o hodnotu"
-                                        <| string (item - listOfFilesLength)
-                                     do printfn "%s" <| str
-                                     let path = string <| listOfFiles.Item (listOfFilesLength - 1) 
-                                     path 
-                            | false -> 
-                                     let path = string <| listOfFiles.Item (item - 1)
-                                     path                                    
+                       let pathWithArgument() = 
+                           match (item - 1) >= listOfFilesLength with
+                           | true  ->                                
+                                    let str = 
+                                       sprintf"%s %s"         
+                                       <| "\nNásledující počet skenů v excel. tabulce je vyšší než realita o hodnotu"
+                                       <| string (item - listOfFilesLength)
+                                    do printfn "%s" <| str
+                                    let path = string <| listOfFiles.Item (listOfFilesLength - 1) 
+                                    path 
+                           | false -> 
+                                    let path = string <| listOfFiles.Item (item - 1)
+                                    path                                    
                         
-                        let pathWithArgument = pathWithArgument()
+                       let pathWithArgument = pathWithArgument()
                  
-                        let startIrfanView x = System.Diagnostics.Process.Start(rcO.path2, pathWithArgument)  //spousteni IrfanView
+                       let startIrfanView x = System.Diagnostics.Process.Start(rcO.path2, pathWithArgument)  //spousteni IrfanView
                  
-                        //let finalAction x = ()      
-                        let result = //tohle zachyti neexistujici IrfanView, neni treba delat komplikovany pattern matching s fileInfo
-                            let ropResults = tryWith startIrfanView (fun x -> ()) (fun ex -> ())                                                     
-                            ropResults |> deconstructor1 error0  
-                        result
+                       //let finalAction x = ()      
+                       let result = //tohle zachyti neexistujici IrfanView, neni treba delat komplikovany pattern matching s fileInfo
+                           let ropResults = tryWith startIrfanView (fun x -> ()) (fun ex -> ())                                                     
+                           ropResults |> deconstructor1 error0  
+                       result
                                      
-                        let printIt() = 
-                            let lastXyCharacters = pathWithArgument.Substring((pathWithArgument.Length - rcO.suffixAndExtLength), rcO.suffixAndExtLength)
-                            let str = 
-                                sprintf"%s%s [%s] %s %s" 
-                                <| rcO.prefix
-                                <| string (i + low) 
-                                <| string (numberOfFilesList.Item i) 
-                                <| "Press ENTER to continue (Esc for IrView closure)" 
-                                <| lastXyCharacters                                    
-                            do printfn "%s" str   
-                        printIt()       
+                       let printIt() = 
+                           let lastXyCharacters = pathWithArgument.Substring((pathWithArgument.Length - rcO.suffixAndExtLength), rcO.suffixAndExtLength)
+                           let str = 
+                               sprintf"%s%s [%s] %s %s" 
+                               <| rcO.prefix
+                               <| string (i + low) 
+                               <| string (numberOfFilesList.Item i) 
+                               <| "Press ENTER to continue (Esc for IrView closure)" 
+                               <| lastXyCharacters                                    
+                           do printfn "%s" str   
+                       printIt()       
                         
-                        do Process.browseThroughScans()
+                       do Process.browseThroughScans()
           )     
 
 //******* MAIN FUNCTION DEFINITION - OPENING IRFANVIEW WITH LAST FILES IN THEIR RESPECTIVE FOLDERS => vystupni funkce
@@ -144,9 +146,7 @@ let private (>>=) condition nextFunc = //symbol “»=” is the standard way of
     match condition with
     | false -> rc.imageViewerProcess |> getRidOfItAll  
     | true  -> nextFunc() 
-       
-//An intrinsic type extension is a type extension that extends a user-defined type.
-//"with" adds a member to MyPatternBuilder as an extension
+
 type private MyPatternBuilder = MyPatternBuilder with            
     member _.Bind(condition, nextFunc) = (>>=) <| condition <| nextFunc 
     member _.Return x = x

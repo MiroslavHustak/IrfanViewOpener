@@ -22,7 +22,8 @@ open Errors
         
             loop listRange initialString
      
-   module Process =        
+   module Process =  
+    
         [<CompiledName "KillSingleProcess">]
         let killSingleProcess(name: string, errorNumber: string, consoleApp: bool): unit = 
            try          
@@ -31,18 +32,20 @@ open Errors
                   //|> Option.ofObj        //zbytecne, nebot se dale ve funkci zachyti String.IsNullOrEmpty            
                   //|> optionToArrayToList
                   |> List.ofArray
-                  |> List.map (fun item -> 
-                                          match (item.ProcessName |> String.IsNullOrEmpty) with
-                                          | true  -> ()
-                                          | false -> item.Kill() 
-                              )
+                  |> List.map
+                      (fun item -> 
+                                 match (item.ProcessName |> String.IsNullOrEmpty) with
+                                 | true  -> ()
+                                 | false -> item.Kill() 
+                      )
               ()                                            
            with  
            | ex when (consoleApp = true)  -> 
-                                             do printfn "%s: %s" <| errorNumber <| string ex.Message
-                                             let result = Console.ReadKey()  
-                                             ()
-           |_  when (consoleApp = false)  -> ()
+                                           do printfn "%s: %s" <| errorNumber <| string ex.Message
+                                           let result = Console.ReadKey()  
+                                           ()
+           |_  when (consoleApp = false)  ->
+                                           ()
 
         let internal pressEnterToContinue() = //internal indicates that the entity can be accessed only from the same assembly            
             Seq.initInfinite (fun _ -> Console.ReadKey().Key)  
@@ -56,6 +59,7 @@ open Errors
             | _                 -> pressEnterToContinue()
          
    module private TryParserInt =
+
         let tryParseWith (tryParseFunc: string -> bool * _) =
             tryParseFunc >> function
             | true, value -> Some value
@@ -64,32 +68,41 @@ open Errors
         let (|Int|_|) = parseInt        
 
    module Parsing =
-        let f x = let isANumber = x                                          
-                  isANumber        
+
+        let f x =
+            let isANumber = x                                          
+            isANumber    
+            
         let rec parseMe =
             function            
-            | TryParserInt.Int i -> f i 
+            | TryParserInt.Int i -> 
+                                  f i 
             | notANumber         -> 
-                                    notANumber |> error66  
-                                    f parseMe <| Console.ReadLine()
+                                  notANumber |> error66  
+                                  f parseMe <| Console.ReadLine()
                                    
    module Parsing1 =
-        let f x = let isANumber = x                                          
-                  isANumber              
+
+        let f x = 
+            let isANumber = x                                          
+            isANumber  
+                  
         let rec parseMe1 = 
             function            
-            | TryParserInt.Int i -> f i
+            | TryParserInt.Int i -> 
+                                  f i
             | _                  -> 
-                                    do Console.Clear() |> ignore
-                                    error7()  
-                                    0 //whatever...                                            
+                                  do Console.Clear() |> ignore
+                                  error7()  
+                                  0 //whatever...                                            
    
    //Toto neni pouzivany kod, ale jen pattern pro tvorbu TryParserInt, TryParserDate atd. Neautorsky kod.
    module private TryParser =
+
         let tryParseWith (tryParseFunc: string -> bool * _) = 
             tryParseFunc >> function
-                            | true, value -> Some value
-                            | false, _    -> None
+            | true, value -> Some value
+            | false, _    -> None
 
         let parseDate   = tryParseWith <| System.DateTime.TryParse
         let parseInt    = tryParseWith <| System.Int32.TryParse

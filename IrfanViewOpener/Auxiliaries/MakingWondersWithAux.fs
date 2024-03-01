@@ -19,10 +19,11 @@ let getAux low high =
     let auxB1 = z high            
     //...anebo takto (lze i Array.reduce):                                          
     let zB =
-        let listOfFunctions = [
-                                fun x -> 1 + x;
-                                fun x -> x - low;                                               
-                              ]                                               
+        let listOfFunctions =
+            [
+                fun x -> 1 + x
+                fun x -> x - low                                               
+            ]                                               
         List.reduce (>>) listOfFunctions//vsechny funkce z kolekce necha vykonavat v jedne //normalne musi to asi byt v try-with//viz kap. composing functions together
     let auxB2 = zB high
            

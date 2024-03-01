@@ -8,9 +8,6 @@ open Errors
 open Settings.MySettings
 open ROP_Functions.MyFunctions
 
-//nested functions, vystup jsou data (typu option)
-//impure z logickych duvodu
-
 //!!! nebude fungovat bez vyreseni problemu s encoding - viz soubor Start.fs
 let readDataFromExcel x =  
     
@@ -22,21 +19,21 @@ let readDataFromExcel x =
         //TODO try with
         use stream = File.Open(filepath, FileMode.Open, FileAccess.Read) //vyjimecne unmanaged scope, aby bylo mozne pouzit use    
 
-        let excelReaderStream =  //vsimni si, jak si compiler vydedukuje string parametr z pouziti function (tj. match excelReaderStream fileExt with ...)
-                                 //a vsimni si, jak takto vznikla partially applied function
+        let excelReaderStream =  
+
             let excelReaderXlsxF stream = ExcelReaderFactory.CreateOpenXmlReader(stream)  
             let excelReaderXlsF stream = ExcelReaderFactory.CreateBinaryReader(stream)//pouze pro rozsireni programu o vyber excel souboru         
   
-            function //vsimni si, jak si compiler vydedukuje parametr fileExt
+            function 
             | ".xlsx" -> 
-                         let myStream = stream |> excelReaderXlsxF  
-                         myStream |> Option.ofObj
+                       let myStream = stream |> excelReaderXlsxF  
+                       myStream |> Option.ofObj
             | ".xls"  -> 
-                         let myStream = stream |> excelReaderXlsF //tohle v teto app nikdy nenastane, neb mam nastaveny natvrdo mustr.xlsx, ne xls
-                         myStream |> Option.ofObj
+                       let myStream = stream |> excelReaderXlsF //tohle v teto app nikdy nenastane, neb mam nastaveny natvrdo mustr.xlsx, ne xls
+                       myStream |> Option.ofObj
             | _       -> 
-                         let myStream = None  
-                         myStream 
+                       let myStream = None  
+                       myStream 
     
         let dtXlsxOption: DataTable option  = 
 
@@ -46,11 +43,14 @@ let readDataFromExcel x =
             match excelReaderStream fileExt with 
             | Some excelReader ->    
                                 //TODO try with
-                                use dtXlsx = excelReader.AsDataSet(                
-                                                new ExcelDataSetConfiguration (ConfigureDataTable = 
+                                use dtXlsx =
+                                    excelReader.AsDataSet(                
+                                        new ExcelDataSetConfiguration
+                                            (
+                                                ConfigureDataTable = 
                                                     fun (_:IExcelDataReader) -> ExcelDataTableConfiguration (UseHeaderRow = true)
-                                                )
-                                                ).Tables.[rcR.indexOfXlsxSheet] 
+                                            )
+                                        ).Tables.[rcR.indexOfXlsxSheet] 
                                 //excelReader.Close()   
                                 //excelReader.Dispose()                                          
                                 dtXlsx |> Option.ofObj
@@ -91,19 +91,20 @@ let readDataFromExcel x =
             try    
                 File.Exists(filepath)
                 |> function
-                    | true  -> readData() |> adaptDtXlsx //reading from Excel
+                    | true  -> 
+                             readData() |> adaptDtXlsx //reading from Excel
                     | false -> 
-                               do error8()
-                               None                                              
+                             do error8()
+                             None                                              
             finally
             () //zatim nepotrebne
         with                                                                                               
         | :? System.IO.IOException as ex -> 
-                                            ex.Message |> error12 
-                                            None
+                                          ex.Message |> error12 
+                                          None
         | _ as                        ex -> 
-                                            ex.Message |> error1 //System.Exception
-                                            None
+                                          ex.Message |> error1 //System.Exception
+                                          None
     readFromExcel            
 
     (*       
